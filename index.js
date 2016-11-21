@@ -7,7 +7,7 @@ var ConcatSource = require("webpack-sources").ConcatSource;
 var async = require("async");
 var ExtractedModule = require("./ExtractedModule");
 var Chunk = require("webpack/lib/Chunk");
-var OrderUndefinedError = require("./OrderUndefinedError");
+// var OrderUndefinedError = require("./OrderUndefinedError");
 var loaderUtils = require("loader-utils");
 
 var NS = fs.realpathSync(__dirname);
@@ -296,10 +296,12 @@ ExtractTextPlugin.prototype.apply = function(compiler) {
 			extractedChunks.forEach(function(extractedChunk) {
 				if(extractedChunk.modules.length) {
 					extractedChunk.modules.sort(function(a, b) {
-						if(isInvalidOrder(a, b)) {
-							compilation.errors.push(new OrderUndefinedError(a.getOriginalModule()));
-							compilation.errors.push(new OrderUndefinedError(b.getOriginalModule()));
-						}
+						// See https://github.com/webpack/extract-text-webpack-plugin/pull/166 for
+						// discussion of why this is commented out
+						// if(isInvalidOrder(a, b)) {
+						// 	compilation.errors.push(new OrderUndefinedError(a.getOriginalModule()));
+						// 	compilation.errors.push(new OrderUndefinedError(b.getOriginalModule()));
+						// }
 						return getOrder(a, b);
 					});
 					var chunk = extractedChunk.originalChunk;
